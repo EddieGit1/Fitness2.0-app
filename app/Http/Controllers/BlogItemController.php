@@ -37,6 +37,20 @@ class BlogItemController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+           'full_name'=>'required|string|max:50',
+            'blog_title'=>'required|string|max:50',
+            'blog_text'=>'required|string|max:50',
+        ]);
+
+        $blogItem = new BlogItem([
+            'full_name' => $request->get('full_name'),
+            'blog_title' => $request->get('blog_title'),
+            'blog_text' => $request->get('blog_text'),
+        ]);
+
+        $blogItem->save();
+        return redirect()->route('home');
     }
 
     /**

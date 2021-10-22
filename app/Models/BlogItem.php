@@ -10,9 +10,7 @@ class BlogItem extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'full_name',
-        'workout_title',
         'blog_title',
         'blog_text'
     ];

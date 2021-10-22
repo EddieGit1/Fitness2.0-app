@@ -18,3 +18,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', [BlogItemController::class, 'index']);
+
+Route::view('/create', [BlogItemController::class, 'create']);
+Route::post('/create', [BlogItemController::class, 'store'])->name('store');
