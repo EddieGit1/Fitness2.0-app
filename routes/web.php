@@ -21,3 +21,5 @@ Route::get('/', [BlogItemController::class, 'index']);
 
 Route::view('/create', [BlogItemController::class, 'create']);
 Route::post('/create', [BlogItemController::class, 'store'])->name('store');
+
+Route::view('/detail', [BlogItemController::class, 'detail']);
