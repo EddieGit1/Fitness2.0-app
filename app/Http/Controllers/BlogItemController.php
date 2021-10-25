@@ -96,5 +96,9 @@ class BlogItemController extends Controller
     public function destroy($id)
     {
         //
+        $blogItem = blogItem::find($id);
+        $blogItem->delete();
+
+        return redirect()->route('home');
     }
 }

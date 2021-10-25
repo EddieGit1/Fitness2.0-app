@@ -6,9 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Blogs</title>
     <link rel="stylesheet" href="/app.css">
+    <link rel="stylesheet" href="/css">
 </head>
 <body>
-<a href="{{ route('home') }}">Profile</a>
+<a href="{{ route('home') }}">Login</a>
 <table class="table table-striped table-bordered">
     <ul>
         @foreach($blogItems as $blogItem)

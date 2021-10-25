@@ -23,3 +23,7 @@ Route::view('/create', [BlogItemController::class, 'create']);
 Route::post('/create', [BlogItemController::class, 'store'])->name('store');
 
 Route::view('/detail', [BlogItemController::class, 'detail']);
+
+Route::delete('/home/{id}', [BlogItemController::class, 'destroy'])->name('destroy');
+
+
