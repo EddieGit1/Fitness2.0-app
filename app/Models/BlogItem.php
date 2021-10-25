@@ -14,4 +14,10 @@ class BlogItem extends Model
         'blog_title',
         'blog_text'
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }
+
+

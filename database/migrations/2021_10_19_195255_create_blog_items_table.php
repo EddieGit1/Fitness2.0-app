@@ -15,7 +15,6 @@ class CreateBlogItemsTable extends Migration
     {
         Schema::create('blog_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
             $table->string('full_name', 50);
             $table->string('blog_title',50);
             $table->string('blog_text', 255);

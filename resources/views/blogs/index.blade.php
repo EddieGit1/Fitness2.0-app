@@ -8,15 +8,15 @@
     <link rel="stylesheet" href="/app.css">
 </head>
 <body>
+<a href="{{ route('home') }}">Profile</a>
 <table class="table table-striped table-bordered">
-        <ul>
-            @foreach($blogItems as $blogItem)
-                <li>Naam {{$blogItem->full_name}}</li>
-                <li>Title {{$blogItem->blog_title}}</li>
-                <li>Text {{$blogItem->blog_text}}</li>
-
-            @endforeach
-        </ul>
+    <ul>
+        @foreach($blogItems as $blogItem)
+            <li>Naam {{$blogItem->full_name}}</li>
+            <li>Title {{$blogItem->blog_title}}</li>
+            <li>Text {{$blogItem->blog_text}}</li>
+        @endforeach
+    </ul>
 </table>
 </body>
 </html>
