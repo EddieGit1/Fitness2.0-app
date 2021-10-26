@@ -26,4 +26,7 @@ Route::view('/detail', [BlogItemController::class, 'detail']);
 
 Route::delete('/home/{id}', [BlogItemController::class, 'destroy'])->name('destroy');
 
+Route::view('/edit', [BlogItemController::class, 'edit']);
+Route::get('{id}/edit', [BlogItemController::class, 'edit'])->name('edit');
+Route::patch('{id}', [BlogItemController::class, 'update'])->name('update');
 

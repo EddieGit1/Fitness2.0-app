@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BlogItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class BlogItemController extends Controller
@@ -26,6 +27,7 @@ class BlogItemController extends Controller
     public function create()
     {
         //
+
     }
 
     /**
@@ -48,6 +50,8 @@ class BlogItemController extends Controller
             'blog_title' => $request->get('blog_title'),
             'blog_text' => $request->get('blog_text'),
         ]);
+
+        $blogItem->user_id = Auth::user()->id;
 
         $blogItem->save();
         return redirect()->route('home');
@@ -73,6 +77,14 @@ class BlogItemController extends Controller
     public function edit($id)
     {
         //
+        $blogItem = blogItem::find($id);
+        if($blogItem == null){
+            abort(404, "Geen workout routine gevonden");
+        }
+
+        //Show a view to edit an existing resource.
+        return view('edit', compact('blogItem'));
+        //
     }
 
     /**
@@ -85,6 +97,19 @@ class BlogItemController extends Controller
     public function update(Request $request, $id)
     {
         //
+        request()->validate([
+            'full_name'=>'required|string|max:50',
+            'blog_title'=>'required|string|max:50',
+            'blog_text'=>'required|string|max:50',
+        ]);
+
+        $blogItem = BlogItem::find($id);
+        $blogItem->full_name = request('full_name');
+        $blogItem->blog_title = request('blog_title');
+        $blogItem->blog_text = request('blog_text');
+        $blogItem->save();
+
+        return redirect('home')->with('succes', 'Blog saved');
     }
 
     /**
