@@ -17,6 +17,9 @@
         <div>
             <a href="{{ url('create') }}">Create new Blog</a>
         </div>
+        @if($role == 1)
+        <a href="{{route('admin')}}">Go to admin panel</a>
+        @endif
         <table class="table table-striped table-bordered">
             <tr>
                 <th>Title</th>
@@ -26,6 +29,7 @@
             <tr>
                 <td>{{$blogItem->blog_title}}</td>
                 <td>{{$blogItem->blog_text}}</td>
+                <td><a href="{{ route('edit',$blogItem->id)}}">Edit</a></td>
                 <td>
                     <form method="post" action="{{ route('destroy', $blogItem->id) }}">
                         @csrf

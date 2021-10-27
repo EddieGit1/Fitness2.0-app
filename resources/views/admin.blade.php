@@ -10,13 +10,26 @@
 </head>
 <body>
 <a href="{{ route('home') }}">Login</a>
+@if($role == 1)
+    <h2>Welcome Admin!</h2>
+@endif
 
 <table class="table table-striped table-bordered">
     <ul>
         @foreach($blogItems as $blogItem)
-            <li>Naam {{$blogItem->full_name}}</li>
-            <li>Title {{$blogItem->blog_title}}</li>
-            <li>Text {{$blogItem->blog_text}}</li>
+            <li>Naam: {{$blogItem->full_name}}</li>
+            <li>Title: {{$blogItem->blog_title}}</li>
+            <li>Text: {{$blogItem->blog_text}}</li>
+
+                <a href="{{route('postStatus', ['id' => $blogItem->id])}}">
+                <button>
+                    @if($blogItem->status == 1)
+                    Active
+                    @else
+                        Inactive
+                    @endif
+                </button>
+                </a>
         @endforeach
     </ul>
 </table>

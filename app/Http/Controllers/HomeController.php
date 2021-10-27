@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BlogItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -28,6 +29,12 @@ class HomeController extends Controller
         $id = Auth::user()->id;
         $blogs = BlogItem::where('user_id', $id)->get();
 
-        return view('home', ['blogs' => $blogs]);
+        $userId = Auth::user()->id;
+        $role = DB::table('role_user')
+            ->where('user_id', $userId)->first();
+
+        $roleId = $role->role_id;
+
+        return view('home', ['blogs' => $blogs, 'role' => $roleId]);
     }
 }

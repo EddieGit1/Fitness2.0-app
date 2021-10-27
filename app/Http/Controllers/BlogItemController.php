@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BlogItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class BlogItemController extends Controller
@@ -12,11 +13,56 @@ class BlogItemController extends Controller
 
     public function index()
     {
+        if (!Auth::check()) {
+            $roleId = 2;
+        } else {
+            $userId = Auth::user()->id;
+            $role = DB::table('role_user')
+                ->where('user_id', $userId)->first();
+
+            $roleId = $role->role_id;
+        }
+
+        // Get all the blogs
+        $blogItems = BlogItem::where('status', 1)->get();
+
+        return view('blogs.index', compact( 'blogItems'), ['role' => $roleId]);
+
+    }
+
+    public function admin()
+    {
+        if (!Auth::check()) {
+            $roleId = 2;
+        } else {
+            $userId = Auth::user()->id;
+            $role = DB::table('role_user')
+                ->where('user_id', $userId)->first();
+
+            $roleId = $role->role_id;
+        }
         // Get all the blogs
         $blogItems = BlogItem::all();
 
-        return view('blogs.index', compact( 'blogItems'));
+        return view('admin', compact( 'blogItems'), ['role' => $roleId]);
 
+    }
+
+    public function postStatus(Request $request, $id) {
+        $blog = BlogItem::find($id);
+        $blogStatus = $blog->status;
+
+        if ($blogStatus == true) {
+            $blog->status = false;
+        } else {
+            $blog->status = true;
+        }
+
+        $blog->save();
+
+
+
+        return redirect()->route('admin');
     }
 
     /**
@@ -77,6 +123,11 @@ class BlogItemController extends Controller
     public function edit($id)
     {
         //
+
+        if (!Auth::check()){
+            return redirect()->route('index');
+        }
+
         $blogItem = blogItem::find($id);
         if($blogItem == null){
             abort(404, "Geen workout routine gevonden");
