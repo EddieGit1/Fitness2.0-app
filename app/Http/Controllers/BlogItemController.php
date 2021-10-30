@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BlogItem;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +12,7 @@ use Illuminate\View\View;
 class BlogItemController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         if (!Auth::check()) {
             $roleId = 2;
@@ -23,10 +24,24 @@ class BlogItemController extends Controller
             $roleId = $role->role_id;
         }
 
-        // Get all the blogs
-        $blogItems = BlogItem::where('status', 1)->get();
+        $cat = Category::all();
 
-        return view('blogs.index', compact( 'blogItems'), ['role' => $roleId]);
+        $catId = $request->get('category');
+        if ($request->has('category')) {
+            $blogItems = BlogItem::where('category_id', $catId)->where('status', true)->get();
+        } else {
+            $blogItems = BlogItem::where('status', true)->get();
+        }
+
+        $search = $request->get('search');
+        if ($search){
+            $blogItems = BlogItem::where('blog_title', 'like','%'.$search.'%')->orWhere('blog_text', 'like','%'.$search.'%')->where('status', true)->get();
+        }
+
+        // Get all the blogs
+//   $blogItems = BlogItem::where('status', 1)->get();
+
+        return view('blogs.index', compact( 'blogItems', 'cat'), ['role' => $roleId]);
 
     }
 
@@ -60,8 +75,6 @@ class BlogItemController extends Controller
 
         $blog->save();
 
-
-
         return redirect()->route('admin');
     }
 
@@ -72,7 +85,8 @@ class BlogItemController extends Controller
      */
     public function create()
     {
-        //
+        $cat = Category::all();
+        return view('create', compact('cat'));
 
     }
 
@@ -88,19 +102,21 @@ class BlogItemController extends Controller
         $request->validate([
            'full_name'=>'required|string|max:50',
             'blog_title'=>'required|string|max:50',
-            'blog_text'=>'required|string|max:50',
+            'blog_text'=>'required|string|max:50'
+//            'category_id'=>'required|int|'
         ]);
 
         $blogItem = new BlogItem([
             'full_name' => $request->get('full_name'),
             'blog_title' => $request->get('blog_title'),
             'blog_text' => $request->get('blog_text'),
+            'category_id' => $request->get('category')
         ]);
 
         $blogItem->user_id = Auth::user()->id;
 
         $blogItem->save();
-        return redirect()->route('home');
+        return redirect('home');
     }
 
     /**
@@ -130,11 +146,13 @@ class BlogItemController extends Controller
 
         $blogItem = blogItem::find($id);
         if($blogItem == null){
-            abort(404, "Geen workout routine gevonden");
+            abort(404, "Geen blog gevonden");
         }
 
+        $cat = Category::all();
+
         //Show a view to edit an existing resource.
-        return view('edit', compact('blogItem'));
+        return view('edit', compact('blogItem', 'cat'));
         //
     }
 
@@ -158,6 +176,7 @@ class BlogItemController extends Controller
         $blogItem->full_name = request('full_name');
         $blogItem->blog_title = request('blog_title');
         $blogItem->blog_text = request('blog_text');
+        $blogItem->category_id = request('category');
         $blogItem->save();
 
         return redirect('home')->with('succes', 'Blog saved');

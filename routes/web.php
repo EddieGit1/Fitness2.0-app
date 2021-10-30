@@ -19,17 +19,15 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', [BlogItemController::class, 'index'])->name('index');
 
-Route::view('/create', [BlogItemController::class, 'create']);
+Route::get('/create', [BlogItemController::class, 'create']);
 Route::post('/create', [BlogItemController::class, 'store'])->name('store');
-
-Route::view('/detail', [BlogItemController::class, 'detail']);
 
 Route::delete('/home/{id}', [BlogItemController::class, 'destroy'])->name('destroy');
 
-Route::view('/edit', [BlogItemController::class, 'edit']);
 Route::get('/edit/{id}', [BlogItemController::class, 'edit'])->name('edit');
 Route::patch('{id}', [BlogItemController::class, 'update'])->name('update');
 
 Route::get('/admin', [BlogItemController::class, 'admin'])->name('admin');
 Route::get('/admin/status/{id}', [BlogItemController::class, 'postStatus'])->name('postStatus');
+
 

@@ -12,6 +12,7 @@ class BlogItem extends Model
     protected $fillable = [
         'full_name',
         'blog_title',
+        'category_id',
         'blog_text'
     ];
 

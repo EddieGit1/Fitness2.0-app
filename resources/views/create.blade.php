@@ -13,15 +13,20 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Create New blog') }}</div>
-                <form method="post" action="{{route('store')}}">
+                <form method="POST" action="{{route('store')}}">
                     @csrf
                     <div>
                         <label for="full_name">Full Name:</label>
-                        <input type="text" name="full_name"/>
+                        <input type="text" name="full_name" required/>
                     </div>
+                    <select name="category" required>
+                        @foreach($cat as $c)
+                        <option value="{{$c->id}}" name="{{$c->name}}">{{$c->name}}</option>
+                        @endforeach
+                    </select>
                     <div>
-                        <label for="workout_title">Blog Title:</label>
-                        <input type="text" name="blog_title"/>
+                        <label>Blog Title:</label>
+                        <input type="text" name="blog_title" required/>
                     </div><br>
                     <label>Blog content:</label><br>
                     <textarea name="blog_text" rows="5" cols="40" required></textarea><br>
