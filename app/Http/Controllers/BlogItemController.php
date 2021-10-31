@@ -38,6 +38,7 @@ class BlogItemController extends Controller
             $blogItems = BlogItem::where('blog_title', 'like','%'.$search.'%')->orWhere('blog_text', 'like','%'.$search.'%')->where('status', true)->get();
         }
 
+
         // Get all the blogs
 //   $blogItems = BlogItem::where('status', 1)->get();
 
@@ -147,6 +148,10 @@ class BlogItemController extends Controller
         $blogItem = blogItem::find($id);
         if($blogItem == null){
             abort(404, "Geen blog gevonden");
+        }
+
+        if ($blogItem->user_id !== Auth::user()->id){
+            abort(403);
         }
 
         $cat = Category::all();

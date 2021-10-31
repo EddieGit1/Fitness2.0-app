@@ -32,9 +32,10 @@
 <table class="table table-striped table-bordered">
     <ul>
         @foreach($blogItems as $blogItem)
-            <li>Naam {{$blogItem->user_id}}</li>
-            <li>Title {{$blogItem->blog_title}}</li>
-            <li>Text {{$blogItem->blog_text}}</li>
+            <li>Naam: {{$blogItem->user_id}}</li>
+            <li>Title: {{$blogItem->blog_title}}</li>
+            <li>Category: {{$blogItem->category_id}}</li>
+            <li>Text: {{$blogItem->blog_text}}</li>
         @endforeach
     </ul>
 </table>

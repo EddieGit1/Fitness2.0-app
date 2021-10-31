@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BlogItemController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -13,21 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Auth::routes();
 
+Route::group(['middleware' => 'auth'],function (){
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', [BlogItemController::class, 'index'])->name('index');
 
-Route::get('/create', [BlogItemController::class, 'create']);
+Route::get('/create', [BlogItemController::class, 'create'])->middleware('auth');
 Route::post('/create', [BlogItemController::class, 'store'])->name('store');
 
 Route::delete('/home/{id}', [BlogItemController::class, 'destroy'])->name('destroy');
 
-Route::get('/edit/{id}', [BlogItemController::class, 'edit'])->name('edit');
-Route::patch('{id}', [BlogItemController::class, 'update'])->name('update');
+Route::get( '/edit/{id}', [BlogItemController::class, 'edit'])->name('edit')->middleware('auth');
+Route::patch('{id}', [BlogItemController::class, 'update'])->name('update')->middleware('auth');
 
-Route::get('/admin', [BlogItemController::class, 'admin'])->name('admin');
+Route::get('/admin', [BlogItemController::class, 'admin'])->name('admin')->middleware('can:admin');
 Route::get('/admin/status/{id}', [BlogItemController::class, 'postStatus'])->name('postStatus');
 
 
+});

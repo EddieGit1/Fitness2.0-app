@@ -15,6 +15,7 @@ class User extends Authenticatable
     public function blogs(){
         return $this->hasMany(BlogItem::class);
     }
+
     /**
      * The attributes that are mass assignable.
      *
